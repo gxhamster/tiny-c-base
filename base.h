@@ -1,6 +1,9 @@
 #ifndef BASE_H_
 #define BASE_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+
 ////////////////////////////////////////
 // NOTE(iyaan): Detect compiler platform
 
@@ -104,4 +107,20 @@
     #define OS_LINUX 0
 #endif
 
+////////////////////////////////////////
+// NOTE(iyaan): Helper Macros
+
+#define Stmt(S) do { S }while(0)
+#define AssertBreak() (*(int*)0xff = 0)
+
+#if ENABLE_ASSERT
+   #define Assert(expr, msg) Stmt( if(!(expr)) { default_assert_handler(#expr, msg, __FILE__, __LINE__, __func__); })
+#else
+   #define Assert(expr, msg) do { } while (0) 
+#endif
+
+void default_assert_handler(const char *expr, const char *msg, const char *file, int line, const char *func) {
+	fprintf(stderr, "%s(%d:1) runtime assertion: %s, %s\n", file, line, expr, msg);
+	abort();
+}
 #endif // BASE_H_
