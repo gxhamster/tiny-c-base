@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 ////////////////////////////////////////
 // NOTE(iyaan): Detect compiler platform
@@ -15,7 +16,7 @@
         #error missing OS detection
     #endif
 
-    #if defined(_M_AMD64)
+#if defined(_M_AMD64)
         #define ARCH_X64 1
     #elif defined(_M_I86)
         #define ARCH_X86 1
@@ -108,7 +109,7 @@
 #endif
 
 ////////////////////////////////////////
-// NOTE(iyaan): Helper Macros
+// NOTE(iyaan): Custom Assertions
 
 #define Stmt(S) do { S }while(0)
 #define AssertBreak() (*(int*)0xff = 0)
@@ -123,4 +124,53 @@ void default_assert_handler(const char *expr, const char *msg, const char *file,
 	fprintf(stderr, "%s(%d:1) runtime assertion: %s, %s\n", file, line, expr, msg);
 	abort();
 }
+
+////////////////////////////////////////
+// NOTE(iyaan): Helper Macros
+
+#define ArrayCount(a) (sizeof(a)/sizeof((*a)))
+#define IntFromPtr(p) (unsigned long long)((char*)p - (char*)0)
+#define PtrFromInt(i) (void*)((char*)0 + (n))
+#define Member(T,m) (((*T)0)->m)
+#define OffsetOfMember(T,m) IntFromPtr(&Member(T,m))
+
+#define Min(a,b) (((a)<(b))?(a):(b))
+#define Max(a,b) (((a)>(b))?(a):(b))
+
+#define global static
+#define local static
+#define func static
+
+#define MemZero(p, z) memset((p), 0, (z))
+#define MemZeroStruct(p) MemZero((p), sizeof((*p)))
+#define MemZeroArray(p) MemZero((p), sizeof(p))
+
+#define MemCmp(a,b,z) (memcmp((a),(b),(z)) == 0)
+
+#define MemCopy(d,s,z) memmove((d),(s),(sz))
+#define MemCopyStruct(d,s) MemCopy(d,s,Min(sizeof((*d)),sizeof((*s))))
+#define MemCopyArray(d,s) MemCopy(d,s,Min(sizeof((d)),sizeof((s))))
+
+#define EvalPrint(x) printf("%s = %d\n", #x, (x))
+
+////////////////////////////////////////
+// NOTE(iyaan): Basic Types
+
+#include <stdint.h>
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
+typedef int64_t s64;
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+typedef s8 b8;
+typedef s16 b16;
+typedef s32 b32;
+typedef s64 b64;
+typedef float f32;
+typedef double f64;
+
+
 #endif // BASE_H_
