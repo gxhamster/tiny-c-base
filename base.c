@@ -13,7 +13,6 @@ func f32 f32_neg_inf(void) {
   return r.f;
 }
 
-
 func f64 f64_inf(void) {
   union { f64 f; u64 u; } r;
   r.u = 0x7ff0000000000000;
@@ -42,6 +41,203 @@ func f64 f64_abs(f64 x) {
   r.u &= 0x7fffffffffffffff;
   return r.f;
 }
+
+
+////////////////////////////////////////
+// NOTE(iyaan): Compund Types
+
+func v2s32 v2s32_add(v2s32 a, v2s32 b) {
+  v2s32 z = {0};
+  z.x = a.x + b.x;
+  z.y = a.y + b.y;
+  return z; 
+}
+
+func v2f32 v2f32_add(v2f32 a, v2f32 b) {
+  v2f32 z = {0};
+  z.x = a.x + b.x;
+  z.y = a.y + b.y;
+  return z; 
+}
+
+func v3s32 v3s32_add(v3s32 a, v3s32 b) {
+  v3s32 z = {0};
+  z.x = a.x + b.x;
+  z.y = a.y + b.y;
+  z.z = a.z + b.z;
+  return z; 
+}
+
+func v3f32 v3f32_add(v3f32 a, v3f32 b) {
+  v3f32 z = {0};
+  z.x = a.x + b.x;
+  z.y = a.y + b.y;
+  z.z = a.z + b.z;
+  return z; 
+}
+
+func v4s32 v4s32_add(v4s32 a, v4s32 b) {
+  v4s32 z = {0};
+  z.x = a.x + b.x;
+  z.y = a.y + b.y;
+  z.z = a.z + b.z;
+  z.w = a.w + b.w;
+  return z; 
+}
+
+func v4f32 v4f32_add(v4f32 a, v4f32 b) {
+  v4f32 z = {0};
+  z.x = a.x + b.x;
+  z.y = a.y + b.y;
+  z.z = a.z + b.z;
+  z.w = a.w + b.w;
+  return z; 
+}
+
+func v2s32 v2s32_sub(v2s32 a, v2s32 b) {
+  v2s32 z = {0};
+  z.x = a.x - b.x;
+  z.y = a.y - b.y;
+  return z; 
+}
+
+func v2f32 v2f32_sub(v2f32 a, v2f32 b) {
+  v2f32 z = {0};
+  z.x = a.x - b.x;
+  z.y = a.y - b.y;
+  return z;
+}
+
+func v3s32 v3s32_sub(v3s32 a, v3s32 b) {
+  v3s32 z = {0};
+  z.x = a.x - b.x;
+  z.y = a.y - b.y;
+  z.z = a.z - b.z;
+  return z; 
+}
+
+func v3f32 v3f32_sub(v3f32 a, v3f32 b) {
+  v3f32 z = {0};
+  z.x = a.x - b.x;
+  z.y = a.y - b.y;
+  z.z = a.z - b.z;
+  return z; 
+}
+
+func v4s32 v4s32_sub(v4s32 a, v4s32 b) {
+  v4s32 z = {0};
+  z.x = a.x - b.x;
+  z.y = a.y - b.y;
+  z.z = a.z - b.z;
+  z.w = a.w - b.w;
+  return z; 
+}
+
+func v4f32 v4f32_sub(v4f32 a, v4f32 b) {
+  v4f32 z = {0};
+  z.x = a.x - b.x;
+  z.y = a.y - b.y;
+  z.z = a.z - b.z;
+  z.w = a.w - b.w;
+  return z; 
+}
+
+func v2s32 v2s32_mul(v2s32 a, v2s32 b) {
+  v2s32 z = {0};
+  z.x = a.x * b.x;
+  z.y = a.y * b.y;
+  return z; 
+}
+
+func v2f32 v2f32_mul(v2f32 a, v2f32 b) {
+  v2f32 z = {0};
+  z.x = a.x * b.x;
+  z.y = a.y * b.y;
+  return z;
+}
+
+func v3s32 v3s32_mul(v3s32 a, v3s32 b) {
+  v3s32 z = {0};
+  z.x = a.x * b.x;
+  z.y = a.y * b.y;
+  z.z = a.z * b.z;
+  return z; 
+}
+
+func v3f32 v3f32_mul(v3f32 a, v3f32 b) {
+  v3f32 z = {0};
+  z.x = a.x * b.x;
+  z.y = a.y * b.y;
+  z.z = a.z * b.z;
+  return z; 
+}
+
+func v4s32 v4s32_mul(v4s32 a, v4s32 b) {
+  v4s32 z = {0};
+  z.x = a.x * b.x;
+  z.y = a.y * b.y;
+  z.z = a.z * b.z;
+  z.w = a.w * b.w;
+  return z; 
+}
+
+func v4f32 v4f32_mul(v4f32 a, v4f32 b) {
+  v4f32 z = {0};
+  z.x = a.x * b.x;
+  z.y = a.y * b.y;
+  z.z = a.z * b.z;
+  z.w = a.w * b.w;
+  return z; 
+}
+
+func v2s32 v2s32_div(v2s32 a, v2s32 b) {
+  v2s32 z = {0};
+  z.x = a.x / b.x;
+  z.y = a.y / b.y;
+  return z;
+}
+
+func v2f32 v2f32_div(v2f32 a, v2f32 b) {
+  v2f32 z = {0};
+  z.x = a.x / b.x;
+  z.y = a.y / b.y;
+  return z;
+}
+
+func v3s32 v3s32_div(v3s32 a, v3s32 b) {
+  v3s32 z = {0};
+  z.x = a.x / b.x;
+  z.y = a.y / b.y;
+  z.z = a.z / b.z;
+  return z; 
+}
+
+func v3f32 v3f32_div(v3f32 a, v3f32 b) {
+  v3f32 z = {0};
+  z.x = a.x / b.x;
+  z.y = a.y / b.y;
+  z.z = a.z / b.z;
+  return z; 
+}
+
+func v4s32 v4s32_div(v4s32 a, v4s32 b) {
+  v4s32 z = {0};
+  z.x = a.x / b.x;
+  z.y = a.y / b.y;
+  z.z = a.z / b.z;
+  z.w = a.w / b.w;
+  return z;
+}
+
+func v4f32 v4f32_div(v4f32 a, v4f32 b) {
+  v4f32 z = {0};
+  z.x = a.x / b.x;
+  z.y = a.y / b.y;
+  z.z = a.z / b.z;
+  z.w = a.w / b.w;
+  return z;
+}
+
 
 
 ////////////////////////////////////////
