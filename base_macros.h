@@ -160,7 +160,7 @@ void default_assert_handler(const char *expr, const char *msg, const char *file,
 
 #define MemCmp(a, b, z) (memcmp((a), (b), (z)) == 0)
 
-#define MemCopy(d, s, z) memmove((d), (s), (sz))
+#define MemCopy(d, s, z) memmove((d), (s), (z))
 #define MemCopyStruct(d, s) MemCopy(d, s, Min(sizeof((*d)), sizeof((*s))))
 #define MemCopyArray(d, s) MemCopy(d, s, Min(sizeof((d)), sizeof((s))))
 
