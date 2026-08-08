@@ -6,8 +6,9 @@
 #include "base_allocator.h"
 
 ////////////////////////////////////////
-// NOTE(iyaan): Strings
-
+/// Strings: Count based strings with methods
+/// to convert between normal cstrings. These strings
+/// will require an allocator.
 
 // NOTE(iyaan): string8 will not count the
 // null terminator in its size
@@ -21,13 +22,15 @@ typedef struct {
 string8 string8_from_cstring(char *cstring);
 string8 string8_from_cstring_cloned(Allocator* allocator, char *cstring);
 string8 string8_substr(Allocator* allocator, string8 str, u64 start, u64 end);
-Bool string8_equal(string8 a, string8 b);
+bool string8_equal(string8 a, string8 b);
 char* string8_to_cstring(Allocator* allocator, string8 str);
-Bool string8_is_ascii_space(u8 byte);
+bool string8_is_ascii_space(u8 byte);
 string8 string8_cat(Allocator* allocator, string8 a, string8 b);
-Bool string8_contains(string8 hay, string8 needle);
+bool string8_contains(string8 hay, string8 needle);
 string8 string8_fmt(Allocator* allocator, const char* format, ...);
 string8 string8_split(Allocator* allocator, string8 sep);
+
+#ifdef BASE_IMPL
 
 u64 cstring_len(char* cstring) {
   char *ptr = cstring;
@@ -72,7 +75,7 @@ string8 string8_substr(Allocator* allocator, string8 str, u64 start, u64 end) {
   return ret_str;
 }
 
-b8 string8_equal(string8 a, string8 b) {
+bool string8_equal(string8 a, string8 b) {
   if (a.size != b.size) {
     return 0;
   }
@@ -92,7 +95,7 @@ char* string8_to_cstring(Allocator* allocator, string8 str) {
 }
 
 
-Bool string8_is_ascii_space(u8 byte) {
+bool string8_is_ascii_space(u8 byte) {
   if (byte == ' ' || byte == '\t' || byte == '\n' || byte == '\r') {
     return 1;
   }
@@ -115,7 +118,7 @@ string8 string8_cat(Allocator* allocator, string8 a, string8 b) {
   return str;
 }
 
-Bool string8_contains(string8 hay, string8 needle) {
+bool string8_contains(string8 hay, string8 needle) {
   if (hay.size < needle.size) {
     return 0;
   }
@@ -124,12 +127,12 @@ Bool string8_contains(string8 hay, string8 needle) {
     if (hay.str[i] == needle.str[0]) {
       const char* hay_ptr_offset = ByteOffset(hay.str, i);
       if MemCmp(hay_ptr_offset, needle.str, needle.size) {
-        return True;
+        return true;
       }
     }
   }
 
-  return False;
+  return false;
 }
 
 #define TMP_BUFFER_SIZE 128
@@ -160,4 +163,7 @@ string8 string8_fmt(Allocator* allocator, const char* format, ...) {
   ret_str.size = result;
   return ret_str;
 }
+
+#endif // BASE_IMPL
+
 #endif // BASE_STRINGS_H_
