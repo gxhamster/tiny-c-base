@@ -49,7 +49,7 @@
     #define ARCH_ARM64 1
   #endif
 
-#elif defined(__GNUCC__)
+#elif defined(__GNUC__)
   #define COMPILER_GCC 1
   #if defined(_WIN32)
     #define OS_WINDOWS 1
