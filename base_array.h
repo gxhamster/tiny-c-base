@@ -34,7 +34,6 @@ Bool dynamic_array_init(dynamic_array* dyn_arr, Allocator allocator, const u64 c
     return False;
   }
     
-
   return True;
 }
 
@@ -83,6 +82,14 @@ func u64 get_last_elem_idx(dynamic_array* arr) {
   } else {
     return arr->count - 1;
   }
+}
+
+void* _dynamic_array_resize(dynamic_array* arr, u64 cap) {
+  const u64 new_size_bytes = cap * arr->elem_size;
+  allocator_resize(&arr->allocator, new_size_bytes, 0);
+  arr->cap = cap;
+
+  return arr->data;
 }
 
 #define push(arr, val, T) Stmt(T v = val; dynamic_array_push(arr, (void*)&v);)
@@ -160,4 +167,34 @@ Bool dynamic_array_ordered_remove(dynamic_array* arr, void* ptr, u64 idx) {
   }
 }
 
-Bool dynamic_array_inject_at(dynamic_array* arr, u64 idx);
+
+// Injecting into a specific index. It will move other elements upwards when
+// inserted below other elements. Will resize the the dynamic array to the wanted
+// index.
+Bool dynamic_array_inject_at(dynamic_array* arr, void* elem, u64 idx) {
+  if (idx >= arr->cap) {
+    _dynamic_array_resize(arr, idx * 2);
+  }
+  else {
+    if (arr->count + 1 > arr->cap) {
+      _dynamic_array_resize(arr, arr->count * 2);
+    }
+  }
+
+  if (idx >= dynamic_array_size(arr)) {
+    // Insert beyond the current array size
+    arr->count = idx + 1;
+    void* ptr = dynamic_array_index(arr, idx);
+    MemCopy(ptr, elem, arr->elem_size);
+    return True;
+  } else {
+    // Insert at middle
+    void* ptr = dynamic_array_index(arr, idx);
+    void* offset = ByteOffset(ptr, arr->elem_size);
+    u64 copy_sz = (dynamic_array_size(arr) - idx) * arr->elem_size;
+    MemCopy(offset, ptr, copy_sz);
+    MemCopy(ptr, elem, arr->elem_size);
+    arr->count += 1;
+    return True;
+  }
+}
